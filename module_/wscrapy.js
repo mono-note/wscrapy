@@ -4,6 +4,15 @@ var getPDF = require('download-pdf');
 var  he = require('he');
 var request = require('request')
 var fs = require('fs')
+var cheerio = require('cheerio');
+
+function getHead(html){
+  const $ = cheerio.load(html);
+  let title = $('title').text()
+  let keywords = $('meta[name="keywords"]').attr('content')
+  let description = $('meta[name="description"]').attr('content')
+  return {title,keywords,description}
+}
 
 function clean(str) {
   if (str == null) {
@@ -30,11 +39,17 @@ function getIMG(uri, dest,filename=uri.match(/([^\/]+$)/g)[0]) {
   });
 };
 
+function zeroPad (d){
+  return ("0" + d).slice(-2)
+}
 function writeFile(dest){
 
 }
+
 module.exports = {
   clean:clean,
+  zeroPad:zeroPad,
   getPDF:getPDF,
-  getIMG:getIMG
+  getIMG:getIMG,
+  getHead:getHead,
 };
