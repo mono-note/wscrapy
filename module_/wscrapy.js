@@ -42,14 +42,37 @@ function getIMG(uri, dest,filename=uri.match(/([^\/]+$)/g)[0]) {
 function zeroPad (d){
   return ("0" + d).slice(-2)
 }
-function writeFile(dest){
 
+function writeHTML(txtbody = '', dest) {
+  fs.writeFile(dest, txtbody, function (err) {
+    if (err) throw err;
+  })
+}
+
+function getCSV(path){
+  var csv_data = fs.readFileSync(path, { encoding : 'utf8'});
+  return  csvjson.toObject(csv_data, { delimiter : ',',  quote: '"'});
+}
+
+function regHTML(str1,str2){
+  var re = new RegExp(str2.old,"g");
+  return str1.replace(re,str2.new)
+}
+
+function subcontent(txt,start,end){
+  var re1 = new RegExp('(.*?|\n)*?'+start,"s");
+  var re2 = new RegExp(end+'(.*)',"s");
+  return txt.replace(re1,start).replace(re2,'')
 }
 
 module.exports = {
   clean:clean,
   zeroPad:zeroPad,
+  getCSV,getCSV,
   getPDF:getPDF,
   getIMG:getIMG,
   getHead:getHead,
+  writeHTML:writeHTML,
+  regHTML:regHTML,
+  subcontent:subcontents
 };
