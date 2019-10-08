@@ -9,11 +9,14 @@ let csv_data = fs.readFileSync(csvFile, { encoding : 'utf8'});
 const csvUri = csvjson.toObject(csv_data, { delimiter : ',',  quote: '"'}).map(v => v.uri.replace(/ +/g,''));
 
 const isAuth = false;
+
+// load uri in csv to promises
 const promises = csvUri.map(url => requestp(url).catch(err => {
   errMsg = err.options.uri;
   return ''
 }));
 
+//loop for each uri
 Promise.all(promises).then((data) => {
   data.forEach((valHTML, idx) => {
     doCheerio(valHTML, csvUri[idx])

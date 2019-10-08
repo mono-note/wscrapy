@@ -74,5 +74,5 @@ module.exports = {
   getHead:getHead,
   writeHTML:writeHTML,
   regHTML:regHTML,
-  subcontent:subcontents
+  subcontent:subcontent
 };
